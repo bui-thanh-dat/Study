@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -NoProfile -Command \"& ''C:\\\\mingw64\\\\bin\\\\g++.exe'' --version\")",
+      "Bash(powershell.exe -NoProfile -Command \":*)",
+      "Bash(powershell.exe -NoProfile -Command \"[Environment]::SetEnvironmentVariable\\(''Path'', [Environment]::GetEnvironmentVariable\\(''Path'',''User''\\) + '';C:\\\\mingw64\\\\bin'', ''User''\\); Write-Host ''Done''\")"
+    ]
+  }
+}

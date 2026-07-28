@@ -21,42 +21,75 @@ INSERT INTO employees (first_name, last_name, email, phone, cccd) VALUES
 
 SELECT * FROM employees;
 
-SELECT 
-	id, 
-    CONCAT(first_name, ' ', last_name) AS full_name 
-    FROM employees;
-    
-SELECT 
-    cccd,
-    SUBSTRING(cccd, 1, 3) AS ma_tinh
+SELECT id,
+       CONCAT(first_name, ' ', last_name) AS full_name
 FROM employees;
 
-SELECT 
-	cccd,
-	SUBSTRING(cccd,4,3) AS nam_thang_sinh
+SELECT cccd,
+       SUBSTRING(cccd, 1, 3) AS ma_tinh
 FROM employees;
 
-SELECT 
-	phone,
-    REPLACE(phone, SUBSTRING(phone,4,4), '****') AS phone_masked
+SELECT cccd,
+       SUBSTRING(cccd,4,3) AS nam_thang_sinh
 FROM employees;
 
-SELECT 
-	cccd,
-    CHAR_LENGTH(cccd) AS do_dai,
-    CASE
-		WHEN char_length(cccd) = 12 THEN 'Hop Le'
-        ELSE 'Khong Hop Le'
-	END AS trang_thai
+SELECT phone,
+       REPLACE(phone, SUBSTRING(phone,4,4), '****') AS phone_masked
 FROM employees;
 
-SELECT * FROM employees 
-WHERE lower(first_name) = 'nguyen';
-
-SELECT 
-	first_name,
-    CONCAT(
-		UPPER(SUBSTRING(first_name,1,1)),
-        LOWER(SUBSTRING(first_name,2))
-	) AS first_name_proper	
+SELECT cccd,
+       CHAR_LENGTH(cccd) AS do_dai,
+       CASE
+           WHEN CHAR_LENGTH(cccd)=12 THEN 'Hop Le'
+           ELSE 'Khong Hop Le'
+       END AS trang_thai
 FROM employees;
+
+SELECT *
+FROM employees
+WHERE LOWER(first_name)='nguyen';
+
+SELECT first_name,
+       CONCAT(
+           UPPER(SUBSTRING(first_name,1,1)),
+           LOWER(SUBSTRING(first_name,2))
+       ) AS first_name_proper
+FROM employees;
+
+
+CREATE DATABASE company_db;
+
+USE company_db;
+
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50) NOT NULL,
+    price DECIMAL(5,2)
+);
+
+INSERT INTO products (product_id, product_name)
+VALUES
+(100,'hamburger'),
+(101,'fries'),
+(102,'soda'),
+(103,'ice cream');
+
+SELECT * FROM products;
+
+ALTER TABLE products
+MODIFY price DECIMAL(5,2) DEFAULT 0;
+
+DROP TABLE transactions;
+
+CREATE TABLE transactions(
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    amount DECIMAL(5,2),
+    transaction_date DATETIME DEFAULT NOW()
+);
+
+INSERT INTO transactions(amount)
+VALUES (8.99),(10.99),(12.99);
+
+SELECT * FROM transactions;
+
+DROP TABLE transactions;

@@ -113,3 +113,125 @@ SELECT
     JOIN employees m 
     ON e.manager_id = m.employee_id
     ORDER BY e.employee_id;
+    
+ -- 6. Viết truy vấn để tìm số lượng nhân viên cần quản lý của mỗi người quản lý, tên quản lý kết hợp từ first_name và last_name
+ 
+SELECT 
+	m.employee_id, 
+	CONCAT(m.first_name," " ,m.last_name) AS manager_name,
+    COUNT(e.employee_id) AS number_of_reportees
+FROM employees e
+JOIN employees m
+ON e.manager_id = m.employee_id
+GROUP BY m.employee_id, m.first_name, m.last_name
+-- GROUP BY m.employee_id
+ORDER BY number_of_reportees DESC;
+
+-- Viết truy vấn để tìm được số lượng nhân viên trong mỗi phòng ban sắp xếp theo thứ tự số nhân viên giảm dần
+
+SELECT department_name, 
+		COUNT(employee_id) AS emp_count
+FROM departments d
+JOIN employees 
+ON  d.department_id = employees.department_id
+GROUP BY d.department_name, d.department_id
+ORDER BY emp_count DESC;
+
+-- 8 Viết truy vấn để tìm số lượng nhân viên được thuê trong mỗi năm sắp xếp theo thứ tự số lương nhân viên giảm dần và nếu số lượng nhân viên bằng nhau thì sắp xếp theo năm tăng dần
+SELECT YEAR(hire_date) AS hired_year ,
+	COUNT(e.employee_id) AS  employees_hired_count
+FROM employees e 
+GROUP BY YEAR(hire_date)
+ORDER BY employees_hired_count DESC, hired_year ASC;
+
+-- 9 Viết truy vấn để lấy mức lương lớn nhất, nhỏ nhất và mức lương trung bình của các nhân viên (làm tròn mức lương trung bình về số nguyên)
+
+SELECT 
+	MIN(salary) AS min_sal,
+    MAX(salary) AS max_sal,
+    ROUND(AVG(salary)) AS avg_sal
+FROM employees;
+
+-- 10 Viết truy vấn để chia nhân viên thành ba nhóm dựa vào mức lương, tên nhân viên được kết hợp từ first_name và last_name, kết quả sắp xếp theo tên thứ tự tăng dần
+
+
+SELECT 
+	CONCAT(e.first_name, ' ' ,e.last_name) AS employee,
+    e.salary,
+		CASE 
+        WHEN e.salary >= 2000 AND e.salary < 5000 THEN "low"
+        WHEN e.salary >= 5000 AND e.salary < 10000 THEN "mid"
+        ELSE "high" 
+        END AS salary_level
+FROM employees e 
+JOIN employees m 
+ON e.manager_id = m.employee_id
+ORDER BY e.first_name ASC;
+
+-- 11. Viết truy vấn hiển thị họ tên nhân viên và số điện thoại theo định dạng (_ _ _)-(_ _ _)-(_ _ _ _). Tên nhân viên kết hợp từ first_name và last_name, kết quả hiển thị như hình vẽ dưới đây
+SELECT 
+	CONCAT(first_name,' ', last_name) AS employee,
+    CONCAT( SUBSTRING(phone_number, 1 , 3), '-' , SUBSTRING(phone_number, 5 , 3), '-', SUBSTRING(phone_number, 9 , 4)) AS phone_number
+FROM employees;
+
+-- 12 Viết truy vấn để tìm các nhân viên gia nhập vào tháng 08-1994, tên nhân viên kết hợp từ first_name và last_name
+SELECT 
+	CONCAT(first_name, ' ' , last_name) AS employee,
+    hire_date
+FROM employees
+WHERE YEAR(hire_date) = 1994 AND MONTH(hire_date) = 8;
+
+-- 13. Viết truy vấn để tìm những nhân viên có mức lương cao hơn mức lương trung bình của các nhân viên, kết quả sắp xếp theo thứ tự tăng dần của department_id
+
+SELECT 
+	CONCAT(first_name,last_name) AS name, 
+    e.employee_id, 
+    d.department_name AS department, 
+    d.department_id, 
+    e.salary 
+FROM employees e
+JOIN departments d
+ON d.department_id = e.department_id
+WHERE e.salary > (SELECT AVG(salary) FROM employees)
+ORDER BY salary DESC;
+
+-- 14. Viết truy vấn để tìm mức lương lớn nhất ở mỗi phòng ban, kết quả sắp xếp theo thứ tự tăng dần của department_id
+SELECT 
+    d.department_id, 
+	d.department_name AS department, 
+    MAX(e.salary) AS maxium_salary
+FROM employees e
+JOIN departments d
+ON d.department_id = e.department_id
+GROUP BY d.department_id
+ORDER BY d.department_id ASC;
+
+-- 15. Viết truy vấn để tìm 5 nhân viên có mức lương thấp nhất
+SELECT first_name, last_name, employee_id, salary
+FROM employees
+ORDER BY salary ASC LIMIT 5;
+
+-- 16. Viết truy vấn để hiển thị tên nhân viên theo thứ tự ngược lại
+SELECT LOWER(first_name) AS name,
+	LOWER(REVERSE(first_name)) AS name_in_reverse
+FROM employees;
+
+-- Viết truy vấn để tìm những nhân viên đã gia nhập vào sau ngày 15 của tháng
+SELECT 
+	employee_id, 
+    CONCAT(first_name, ' ', last_name) AS employee,
+    hire_date 
+FROM employees
+WHERE DAY(hire_date) >  15;
+
+-- 18. Viết truy vấn để tìm những quản lý và nhân viên làm trong các phòng ban khác nhau, kết quả sắp xếp theo thứ tự tăng dần của tên người quản lý (tên nhân viên và quản lý kết hợp từ first_name và last_name)
+SELECT 
+	CONCAT(m.first_name, ' ' ,m.last_name) AS manager, 
+    CONCAT(e.first_name, ' ' ,e.last_name) AS employee,
+    m.department_id AS mgr_dept,
+    e.department_id AS emp_dept
+FROM employees e
+JOIN employees m
+ON m.manager_id = e.employee_id
+WHERE m.department_id != e.department_id
+ORDER BY manager ASC;

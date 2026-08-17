@@ -33,7 +33,8 @@ JOIN (
     SELECT company_code, 'M' 		 , manager_code 		   		FROM Manager 
     UNION 
     SELECT company_code, 'E' 		 , employee_code 				FROM Employee 
-) t ON t.company_code = c.company_code
+) t 
+departmentsON t.company_code = c.company_code
 
 GROUP BY c.company_code,
 		c.founder

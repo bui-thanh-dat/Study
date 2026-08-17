@@ -105,8 +105,12 @@ FROM employees
 GROUP BY department_id;
 
 -- CASE in ORDER BY 
-SELECT first_name,job_id
+SELECT first_name, job_id
 FROM employees
 ORDER BY CASE job_id
-				WHEN ''
+			WHEN 'AD_PRES' THEN 1
+			WHEN 'AD_VP' THEN 2
+			ELSE 3
+		END,
+		first_name;
 

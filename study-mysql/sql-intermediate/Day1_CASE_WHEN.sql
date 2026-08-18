@@ -105,40 +105,8 @@ FROM employees
 GROUP BY department_id;
 
 -- CASE in ORDER BY 
-SELECT first_name, job_id
+SELECT first_name,job_id
 FROM employees
 ORDER BY CASE job_id
-			WHEN 'AD_PRES' THEN 1
-			WHEN 'AD_VP' THEN 2
-			ELSE 3
-		END,
-		first_name;
+				WHEN ''
 
--- 2 Đếm số nhân viên theo từng department_id , chia thành 2 cột: số người vào làm trước năm 1996 và số người vào từ 1996 trở đi
-SELECT department_id,
-	COUNT(CASE WHEN YEAR(hire_date) >= 1996 THEN 1 END) AS sau_1996,
-    COUNT(CASE WHEN YEAR(hire_date) < 1996 THEN 1 END) AS truoc_1996
-FROM employees
-GROUP BY department_id;
-
--- 3. Hiện mỗi nhân viên kèm cột co_sep ghi 'Có' nếu manager_id khác NULL, ghi 'Không có' nếu NULL.
-
-SELECT 
-	CONCAT(first_name,' ', last_name) AS name_employee,
-    CASE 
-		WHEN manager_id IS NOT NULL THEN 'CO'
-        ELSE 'KHONG CO'
-        END AS co_sep
-FROM employees;
-
--- 4. Sắp xếp nhân viên: phòng 60 lên đầu, phòng 50 tiếp theo, các phòng còn lại xếp sau theo department_id tăng dần.
-
-SELECT 
-	CONCAT(first_name, ' ', last_name) AS employee_name,
-	department_id
-FROM employees 
-ORDER BY CASE department_id	
-	WHEN 60 THEN 1 
-	WHEN 50 THEN 2
-    ELSE 3
-    END, department_id ASC;

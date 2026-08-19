@@ -52,3 +52,30 @@ FROM employees e;
 SELECT department_id, COUNT(*) - 1 AS so_dong_nghiep
 FROM employees
 GROUP BY department_id;
+
+-- 4. Tìm phòng có lương trung bình cao nhất — dùng subquery trong HAVING .
+SELECT department_id, AVG(salary) AS luong_tb_cao_nhat
+FROM employees 
+GROUP BY department_id
+HAVING AVG(salary) >= ALL ( 
+		SELECT AVG(salary)
+        FROM employees
+        GROUP BY department_id
+);
+
+-- 5. Với mỗi phòng, tìm nhân viên có lương cao nhất phòng đó (correlated subquery trong WHERE ).
+
+SELECT e.department_id, e.first_name, e.salary
+FROM employees e
+WHERE e.salary = ( 
+			SELECT MAX(e2.salary)
+            FROM employees e2
+            WHERE e2.department_id = e.department_id
+);
+SELECT e.department_id, e.first_name, e.salary
+FROM employees e
+WHERE e.salary >= ALL ( 
+			SELECT e2.salary
+            FROM employees e2
+            WHERE e2.department_id = e.department_id
+);

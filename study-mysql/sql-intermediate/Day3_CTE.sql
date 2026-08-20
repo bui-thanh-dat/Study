@@ -63,3 +63,27 @@ WITH RECURSIVE dem AS (
     SELECT n + 1 FROM dem WHERE n < 10 -- recursive, co diem dung
 )
 SELECT n FROM dem;
+
+-- Ví dụ 2 — duyệt cây quản lý
+
+WITH RECURSIVE cay AS (
+-- Anchor: nguoi khong co sep = dinh cay
+SELECT employee_id, first_name, last_name, manager_id,
+		1 AS cap,
+        CAST(first_name AS CHAR(500)) AS duong_dan
+        FROM employees 
+        WHERE manager_id IS NULL
+        
+        UNION ALL
+        
+        -- Resursive: tim linh cua nhung nguoi da co trong cay
+        SELECT e.employee_id, e.first_name, e.last_name, e.manager_id,
+				c.cap + 1,
+                CONCAT(c.duong_dan,  '>' , e.first_name)
+		FROM employees  e
+        JOIN cay c 
+        ON e.manager_id = c.employee_id
+)
+SELECT cap, duong_dan, first_name, last_name
+FROM cay
+ORDER BY duong_dan; 

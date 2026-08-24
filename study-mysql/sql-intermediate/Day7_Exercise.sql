@@ -56,4 +56,33 @@ FROM employees e
 GROUP BY loai;
 
 -- 5. Hiện toàn bộ chuỗi quản lý của Bruce Ernst từ cấp cao nhất xuống (dùng recursive CTE)
+WITH RECURSIVE chuoi_ql AS (
+	-- Anchor: chinh Bruce Ernst
+    SELECT employee_id, first_name, last_name, manager_id, 1 AS cap
+    FROM employees
+    WHERE first_name = 'Bruce' AND last_name = 'Ernst'
+    
+    UNION ALL 
+    
+    -- Recursive: tu node hien tai nhay len sep cua no
+    SELECT e.employee_id, e.first_name, e.last_name, e.manager_id, c.cap + 1 
+    FROM employees e 
+    JOIN chuoi_ql c 
+    ON e.employee_id = c.manager_id
+)
+SELECT cap, first_name, last_name
+FROM chuoi_ql
+ORDER BY cap DESC;
 
+-- 6. Với mỗi job_id , hiện lương cao nhất, thấp nhất, trung bình, và số người có lương trên mức trung bình của chính job_id đó.
+SELECT job_id, 
+	MAX(salary) AS luong_cao_nhat, 
+    MIN(salary) AS luong_thap_nhat, 
+    AVG(salary) AS luong_tb,
+    COUNT(CASE WHEN salary > tb_nhom THEN 1 END) AS so_nguoi_ten_tb 
+FROM (
+	SELECT job_id, salary,
+		AVG(salary) OVER (PARTITION BY job_id) AS tb_nhom
+	FROM employees
+) t
+GROUP BY job_id;

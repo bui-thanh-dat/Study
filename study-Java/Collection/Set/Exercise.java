@@ -79,7 +79,8 @@ public class Exercise {
         String[] words = sentence.split(" ");
         Set<String> set = new HashSet<>();
         for(String w: words){
-            set.add(w);}
+            set.add(w);
+        }
         return set.size();
     }
 

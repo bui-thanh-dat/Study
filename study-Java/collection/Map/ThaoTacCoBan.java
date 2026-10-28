@@ -1,4 +1,4 @@
-package Collection.Map;
+package collection.Map;
 
 import java.util.*;
 

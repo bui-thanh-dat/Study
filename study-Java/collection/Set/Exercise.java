@@ -1,6 +1,4 @@
-package Collection.Set;
-
-import org.w3c.dom.ls.LSOutput;
+package collection.Set;
 
 import java.util.*;
 

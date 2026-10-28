@@ -1,4 +1,4 @@
-package Collection.SapXepAndComparator;
+package collection.sapxepandcomparator;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public class Exercise {
         students.add(new Student(3,"binh",3.5));
         students.add(new Student(1,"an",3.9));
         students.add(new Student(2,"chi",3.5 ));
-        students.add(new Student(4,"an", 3.5));
+        students.add(new Student(4,"an", 3.6));
 
         students.sort((a,b) -> Integer.compare(a.id,b.id));
         System.out.println("Sort in ascending order ID : "+students);

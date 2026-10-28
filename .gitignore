@@ -1,1 +1,7 @@
 *.exe
+.idea/
+*.iml
+out/
+node_modules/
+study-Js/tempCodeRunnerFile.js
+/Bài 1.docx

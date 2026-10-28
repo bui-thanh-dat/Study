@@ -1,4 +1,4 @@
-package Collection.SapXepAndComparator;
+package collection.sapxepandcomparator;
 import java.util.*;
 
 /**

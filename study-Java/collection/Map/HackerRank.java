@@ -1,8 +1,7 @@
-package Collection.Map;
+package collection.Map;
 
 //Complete this code or write your own from scratch
 import java.util.*;
-import java.io.*;
 
 class HackerRank {
     public static void main(String []argh)
